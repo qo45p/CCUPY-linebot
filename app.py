@@ -1,6 +1,7 @@
 ################## 初始化 Line Bot API ##################
 import os
 import dotenv
+import random
 dotenv.load_dotenv()
 
 from linebot import LineBotApi, WebhookHandler
@@ -12,6 +13,8 @@ handler = WebhookHandler(os.getenv('LINE_BOT_SECRET'))
 
 ###################### 初始化 Flask #####################
 from flask import Flask, request, abort
+
+
 
 app = Flask(__name__)
 
@@ -37,12 +40,24 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text))
+	# print('EVENT:')
+	# print(event)
+	# print(type(event))
+	# if '哈' in event.message.text:
+ #    	line_bot_api.reply_message(
+ #        event.reply_token,
+        
+ #    	TextSendMessage(text='哈'*10))
+
+    if '午餐吃什麼' in event.message.text:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=random.choice(['炒麵','乾麵','蛋花湯'])))
+
+
 #########################################################
 
 
 ####################### 執行 Flask ######################
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True) #自動更新
